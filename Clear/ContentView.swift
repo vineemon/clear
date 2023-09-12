@@ -15,7 +15,6 @@ struct ContentView: View {
     @State private var selectedCourse: CloudCourse = .dataPartitioning
     
     var body: some View {
-        NavigationStack {
             VStack{
                 HStack {
                     Spacer()
@@ -54,7 +53,6 @@ struct ContentView: View {
                 }.buttonStyle(.borderedProminent)
                     .frame(alignment: .bottom)
             }
-        }
     }
     
     func submitEvent() {
