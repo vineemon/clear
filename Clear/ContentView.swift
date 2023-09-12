@@ -10,13 +10,49 @@ import Foundation
 
 struct ContentView: View {
     let cloudProjects: [CloudProject]
+    @State var isPopoverPresented = false
+    @State var isEditTimelinesActive = false
+    @State var isCreateTimelinesActive = false
+    @State var isSettingsActive = false
+    @State var isLoggedOut = false
+    
     var body: some View {
-        VStack{
-            Text("Learn Cloud Concepts").font(.system(size: 24)).bold()
-            List(cloudProjects, id: \.title) { cloudProject in
-                CardView(cloudProject: cloudProject)
-                    .listRowBackground(cloudProject.theme.mainColor)
-            }.navigationTitle("Learn Cloud Concepts").scrollContentBackground(.hidden)
+        NavigationStack {
+            VStack{
+                HStack {
+                    Spacer()
+                    Text("Learn Cloud Concepts").font(.system(size: 24)).bold()
+                    Spacer()
+                    Menu {
+                        Button {
+                            self.isCreateTimelinesActive = true
+                        } label: {
+                            Label("Create Timeline", systemImage: "plus.square.fill.on.square.fill")
+                        }
+                        Button {
+                            self.isEditTimelinesActive = true
+                        } label: {
+                            Label("Edit Timelines", systemImage: "pencil.circle.fill")
+                        }
+                        Button {
+                            self.isSettingsActive = true
+                        } label: {
+                            Label("Settings", systemImage: "gearshape.fill")
+                        }
+                        Button {
+                            self.isLoggedOut = true
+                        } label: {
+                            Label("Logout", systemImage: "rectangle.portrait.and.arrow.right.fill")
+                        }
+                    } label: {
+                        Label("", systemImage: "line.3.horizontal.decrease")
+                    }
+                }
+                List(cloudProjects, id: \.title) { cloudProject in
+                    CardView(cloudProject: cloudProject)
+                        .listRowBackground(cloudProject.theme.mainColor)
+                }.scrollContentBackground(.hidden)
+            }
         }
     }
 }
@@ -30,6 +66,7 @@ struct ContentView_Previews: PreviewProvider {
 struct CloudProject {
     var title: String
     var time: Int
+    var difficulty: String
     var theme: Theme
 }
 
@@ -38,12 +75,15 @@ extension CloudProject {
     [
         CloudProject(title: "Database",
                    time: 400,
-                   theme: .yellow),
+                     difficulty: "Medium",
+                   theme: .seafoam),
         CloudProject(title: "Load Balancer",
                    time: 5,
-                   theme: .orange),
+                     difficulty: "Hard",
+                   theme: .poppy),
         CloudProject(title: "Caching",
                    time: 5,
+                     difficulty: "Hard",
                    theme: .poppy)
     ]
 }
