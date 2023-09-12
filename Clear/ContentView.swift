@@ -74,15 +74,15 @@ extension CloudCourse {
     var cloudProject: CloudProject {
         switch self {
         case .dataPartitioning: return CloudProject(title: "Data Partitioning",
-                                                    time: 400,
+                                                    progress: 0.0,
                                                       difficulty: "Hard",
                                                     theme: .poppy)
         case .indexes: return CloudProject(title: "Indexes",
-                                         time: 400,
+                                           progress: 0.0,
                                          difficulty: "Hard",
                                          theme: .poppy)
         case .proxies: return CloudProject(title: "Proxies",
-                                           time: 400,
+                                           progress: 0.0,
                                              difficulty: "Hard",
                                            theme: .poppy)
         }
@@ -91,7 +91,7 @@ extension CloudCourse {
 
 struct CloudProject: Hashable {
     var title: String
-    var time: Int
+    var progress: Float
     var difficulty: String
     var theme: Theme
 }
@@ -100,15 +100,15 @@ extension CloudProject {
     static let sampleData: [CloudProject] =
     [
         CloudProject(title: "Database",
-                   time: 400,
+                     progress: 0.0,
                      difficulty: "Medium",
                    theme: .seafoam),
         CloudProject(title: "Load Balancer",
-                   time: 5,
+                     progress: 0.0,
                      difficulty: "Hard",
                    theme: .poppy),
         CloudProject(title: "Caching",
-                   time: 5,
+                     progress: 0.0,
                      difficulty: "Hard",
                    theme: .poppy)
     ]

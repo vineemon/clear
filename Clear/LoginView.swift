@@ -32,15 +32,15 @@ struct LoginView: View {
 //                ContentView(cloudProjects: $firestoreManager.cloudProjects)
                 ContentView(cloudProjects: [
                                     CloudProject(title: "Database",
-                                               time: 400,
+                                                 progress: 0.0,
                                                  difficulty: "Medium",
                                                theme: .seafoam),
                                     CloudProject(title: "Load Balancer",
-                                               time: 5,
+                                                 progress: 0.0,
                                                  difficulty: "Hard",
                                                theme: .poppy),
                                     CloudProject(title: "Caching",
-                                               time: 5,
+                                                 progress: 0.0,
                                                  difficulty: "Hard",
                                                theme: .poppy)
                                 ]).navigationBarHidden(true)

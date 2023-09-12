@@ -11,23 +11,6 @@ struct CardView: View {
     let cloudProject: CloudProject
     @State var isLearningViewActive = false
     var body: some View {
-//    VStack(alignment: .leading) {
-//        Text(cloudProject.title)
-//            .font(.headline)
-//            .accessibilityAddTraits(.isHeader)
-//        HStack {
-//            Label(cloudProject.difficulty, systemImage: "chart.bar.fill")
-//            Spacer()
-//            Label("\(cloudProject.time)", systemImage: "clock")
-//                .padding(.trailing, 20)
-//        }
-//        .font(.caption)
-//    }
-//    .padding()
-//    .foregroundColor(cloudProject.theme.accentColor)
-//
-        
-        
         VStack(alignment: .leading) {
             Button() {
                 self.isLearningViewActive = true
@@ -42,8 +25,9 @@ struct CardView: View {
                 HStack {
                     Label(cloudProject.difficulty, systemImage: "chart.bar.fill")
                     Spacer()
-                    Label("\(cloudProject.time)", systemImage: "clock")
-                        .padding(.trailing, 20)
+                    ProgressView(value: cloudProject.progress) { Text("\(Int(cloudProject.progress*100))% progress") }.frame(width:100)
+//                    Label("\(cloudProject.time)", systemImage: "clock")
+//                        .padding(.trailing, 20)
                 }
                 .font(.caption)
             }
