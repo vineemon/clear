@@ -10,18 +10,15 @@ import SwiftUI
 struct LearningView: View {
     let cloudProject: CloudProject
     @State var isLearningViewActive = false
-    @State var isPopoverPresented = false
-    @State var isEditTimelinesActive = false
-    @State var isCreateTimelinesActive = false
     @State var isSettingsActive = false
     @State var isLoggedOut = false
     
     
-    let conceptToPages: [String: [some View]] = [
-            "Database" : [DatabasePage1(), DatabasePage1(), DatabasePage1()],
-            "Load Balancer" :[DatabasePage1(), DatabasePage1(), DatabasePage1()],
-            "Caching" :[DatabasePage1(), DatabasePage1(), DatabasePage1()]
-        ]
+    let conceptToPages = [
+        "Database" : 3,
+        "Load Balancer" :3,
+        "Caching" :3
+    ]
     
     init(cloudProject: CloudProject) {
         self.cloudProject = cloudProject
@@ -37,16 +34,6 @@ struct LearningView: View {
                 Text(cloudProject.title).font(.system(size: 24)).bold()
                 Spacer()
                 Menu {
-                    Button {
-                        self.isCreateTimelinesActive = true
-                    } label: {
-                        Label("Create Timeline", systemImage: "plus.square.fill.on.square.fill")
-                    }
-                    Button {
-                        self.isEditTimelinesActive = true
-                    } label: {
-                        Label("Edit Timelines", systemImage: "pencil.circle.fill")
-                    }
                     Button {
                         self.isSettingsActive = true
                     } label: {
@@ -64,16 +51,32 @@ struct LearningView: View {
             
             // learning here, dependent on cloudproject
             TabView {
-                ForEach(0..<conceptToPages[cloudProject.title]!.count, id:\.self) {i in
-                    conceptToPages[cloudProject.title]![i]
+                ForEach(0..<conceptToPages[cloudProject.title]!, id:\.self) {i in
+                    if "Database" == cloudProject.title {
+                        if i == 0 {
+                            DatabasePage1()
+                        } else if i == 1 {
+                            DatabasePage1()
+                        } else {
+                            DatabasePage1()
+                        }
+                    }
+                    else if "Load Balancer" == cloudProject.title {
+                        if i == 0 {
+                            LoadBalancerPage1()
+                        } else if i == 1 {
+                            DatabasePage1()
+                        } else {
+                            DatabasePage1()
+                        }
+                    }
+                    else {
+                        LoadBalancerPage1()
+                    }
                 }
             }.tabViewStyle(.page)
         }.padding()
     }
-    
-//    func getView(String title, Int i) -> some View {
-//
-//    }
 }
 
 struct LearningView_Previews: PreviewProvider {

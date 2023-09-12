@@ -10,11 +10,9 @@ import Foundation
 
 struct ContentView: View {
     let cloudProjects: [CloudProject]
-    @State var isPopoverPresented = false
-    @State var isEditTimelinesActive = false
-    @State var isCreateTimelinesActive = false
     @State var isSettingsActive = false
     @State var isLoggedOut = false
+    @State private var selectedCourse: CloudCourse = .dataPartitioning
     
     var body: some View {
         NavigationStack {
@@ -24,16 +22,6 @@ struct ContentView: View {
                     Text("Learn Cloud Concepts").font(.system(size: 24)).bold()
                     Spacer()
                     Menu {
-                        Button {
-                            self.isCreateTimelinesActive = true
-                        } label: {
-                            Label("Create Timeline", systemImage: "plus.square.fill.on.square.fill")
-                        }
-                        Button {
-                            self.isEditTimelinesActive = true
-                        } label: {
-                            Label("Edit Timelines", systemImage: "pencil.circle.fill")
-                        }
                         Button {
                             self.isSettingsActive = true
                         } label: {
@@ -52,8 +40,24 @@ struct ContentView: View {
                     CardView(cloudProject: cloudProject)
                         .listRowBackground(cloudProject.theme.mainColor)
                 }.scrollContentBackground(.hidden)
+                HStack {
+                    Text("Add Course: ")
+                    Picker("Add Course: ", selection: $selectedCourse) {
+                        ForEach(CloudCourse.allCases) { course in
+                            Text(course.cloudProject.title)
+                                .tag(course.cloudProject)
+                        }
+                    }
+                }
+                Button(action: submitEvent) {
+                    Text("Submit")
+                }.buttonStyle(.borderedProminent)
+                    .frame(alignment: .bottom)
             }
         }
+    }
+    
+    func submitEvent() {
     }
 }
 
@@ -63,7 +67,31 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-struct CloudProject {
+enum CloudCourse: String, CaseIterable, Identifiable {
+    case dataPartitioning, indexes, proxies
+    var id: Self { self }
+}
+
+extension CloudCourse {
+    var cloudProject: CloudProject {
+        switch self {
+        case .dataPartitioning: return CloudProject(title: "Data Partitioning",
+                                                    time: 400,
+                                                      difficulty: "Hard",
+                                                    theme: .poppy)
+        case .indexes: return CloudProject(title: "Indexes",
+                                         time: 400,
+                                         difficulty: "Hard",
+                                         theme: .poppy)
+        case .proxies: return CloudProject(title: "Proxies",
+                                           time: 400,
+                                             difficulty: "Hard",
+                                           theme: .poppy)
+        }
+    }
+}
+
+struct CloudProject: Hashable {
     var title: String
     var time: Int
     var difficulty: String
