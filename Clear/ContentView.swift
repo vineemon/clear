@@ -15,26 +15,8 @@ struct ContentView: View {
     @State private var selectedCourse: CloudCourse = .dataPartitioning
     
     var body: some View {
-            VStack{
-                HStack {
-                    Spacer()
-                    Text("Learn Cloud Concepts").font(.system(size: 24)).bold()
-                    Spacer()
-                    Menu {
-                        Button {
-                            self.isSettingsActive = true
-                        } label: {
-                            Label("Settings", systemImage: "gearshape.fill")
-                        }
-                        Button {
-                            self.isLoggedOut = true
-                        } label: {
-                            Label("Logout", systemImage: "rectangle.portrait.and.arrow.right.fill")
-                        }
-                    } label: {
-                        Label("", systemImage: "line.3.horizontal.decrease")
-                    }
-                }
+        NavigationStack{
+            VStack {
                 List(cloudProjects, id: \.title) { cloudProject in
                     CardView(cloudProject: cloudProject)
                         .listRowBackground(cloudProject.theme.mainColor)
@@ -52,7 +34,25 @@ struct ContentView: View {
                     Text("Submit")
                 }.buttonStyle(.borderedProminent)
                     .frame(alignment: .bottom)
+            }.padding().navigationTitle(Text("Learn Cloud Concepts")).navigationBarBackButtonHidden(true).navigationBarTitleDisplayMode(.inline).toolbar {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    Menu {
+                        Button {
+                            self.isSettingsActive = true
+                        } label: {
+                            Label("Settings", systemImage: "gearshape.fill")
+                        }
+                        Button {
+                            self.isLoggedOut = true
+                        } label: {
+                            Label("Logout", systemImage: "rectangle.portrait.and.arrow.right.fill")
+                        }
+                    } label: {
+                        Label("", systemImage: "line.3.horizontal.decrease")
+                    }
+                }
             }
+        }
     }
     
     func submitEvent() {

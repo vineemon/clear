@@ -25,7 +25,7 @@ struct CardView: View {
                 HStack {
                     Label(cloudProject.difficulty, systemImage: "chart.bar.fill")
                     Spacer()
-                    ProgressView(value: cloudProject.progress) { Text("\(Int(cloudProject.progress*100))% progress") }.frame(width:100)
+                    ProgressView(value: cloudProject.progress) { Text("\(Int(cloudProject.progress*100))% completed") }.frame(width:100)
 //                    Label("\(cloudProject.time)", systemImage: "clock")
 //                        .padding(.trailing, 20)
                 }

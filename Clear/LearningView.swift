@@ -29,26 +29,6 @@ struct LearningView: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            HStack() {
-                Spacer()
-                Text(cloudProject.title).font(.system(size: 24)).bold()
-                Spacer()
-                Menu {
-                    Button {
-                        self.isSettingsActive = true
-                    } label: {
-                        Label("Settings", systemImage: "gearshape.fill")
-                    }
-                    Button {
-                        self.isLoggedOut = true
-                    } label: {
-                        Label("Logout", systemImage: "rectangle.portrait.and.arrow.right.fill")
-                    }
-                } label: {
-                    Label("", systemImage: "line.3.horizontal.decrease")
-                }
-            }
-            
             // learning here, dependent on cloudproject
             TabView {
                 ForEach(0..<conceptToPages[cloudProject.title]!, id:\.self) {i in
@@ -75,7 +55,24 @@ struct LearningView: View {
                     }
                 }
             }.tabViewStyle(.page)
-        }.padding()
+        }.padding().navigationTitle(Text(cloudProject.title)).navigationBarTitleDisplayMode(.inline).toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button {
+                        self.isSettingsActive = true
+                    } label: {
+                        Label("Settings", systemImage: "gearshape.fill")
+                    }
+                    Button {
+                        self.isLoggedOut = true
+                    } label: {
+                        Label("Logout", systemImage: "rectangle.portrait.and.arrow.right.fill")
+                    }
+                } label: {
+                    Label("", systemImage: "line.3.horizontal.decrease")
+                }
+            }
+        }
     }
 }
 
