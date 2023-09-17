@@ -18,14 +18,27 @@ struct LoginView: View {
         NavigationStack {
             VStack {
                 Spacer()
-                TextField("Email", text: $email)
-                SecureField("Password", text: $password)
+                VStack(alignment: .leading) {
+                    Text("Email").foregroundColor(.blue)
+                    TextField("Enter your email address", text: $email)
+                    Divider().overlay(.blue)
+                    Text("Password").foregroundColor(.blue)
+                    SecureField("Enter your password", text: $password)
+                    Divider().overlay(.blue)
+                }.padding()
                 Button(action: login) {
-                    Text("Sign In")
-                }.buttonStyle(.borderedProminent)
-                
+                    Text("Sign In").padding().frame(width: 200)
+                }.frame(alignment: .center).background(alignment: .center, content: {
+                    LinearGradient(
+                        colors: [Color(red: 0.4627, green: 0.8392, blue: 1.0), .blue],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    .frame(width: 200, height: 80, alignment: .center)
+                }
+                ).frame(width: 200, height: 80, alignment: .center).cornerRadius(50).foregroundColor(.white)
                 Spacer()
-                NavigationLink("Sign Up for Chrono") {
+                NavigationLink("Sign Up for Clear") {
                     RegistrationView().environmentObject(firestoreManager)
                     }
             }.padding().navigationDestination(isPresented: $isLoginActive) {
@@ -63,6 +76,6 @@ struct LoginView: View {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView()
+        LoginView().environmentObject(FirestoreManager())
     }
 }

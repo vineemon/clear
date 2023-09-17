@@ -15,16 +15,30 @@ struct RegistrationView: View {
     @State var isRegistrationActive = false
     
     var body: some View {
-        NavigationStack {
-            VStack {
-                TextField("Email", text: $email)
-                SecureField("Password", text: $password)
-                Button(action: register) {
-                    Text("Create Account")
-                }.buttonStyle(.borderedProminent)
-            }.padding().navigationDestination(isPresented: $isRegistrationActive) {
-                LoginView().environmentObject(firestoreManager).navigationBarHidden(true)
+        VStack {
+            Spacer()
+            VStack(alignment: .leading) {
+                Text("Email").foregroundColor(.blue)
+                TextField("Enter your email address", text: $email)
+                Divider().overlay(.blue)
+                Text("Password").foregroundColor(.blue)
+                SecureField("Create your password", text: $password)
+                Divider().overlay(.blue)
+            }.padding()
+            Button(action: register) {
+                Text("Create Account").padding().frame(width: 200)
+            }.frame(alignment: .center).background(alignment: .center, content: {
+                LinearGradient(
+                    colors: [Color(red: 0.4627, green: 0.8392, blue: 1.0), .blue],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .frame(width: 200, height: 80, alignment: .center)
             }
+            ).frame(width: 200, height: 80, alignment: .center).cornerRadius(50).foregroundColor(.white)
+            Spacer()
+        }.padding().navigationTitle(Text("Register using Email Account")).navigationBarTitleDisplayMode(.inline).navigationDestination(isPresented: $isRegistrationActive) {
+            LoginView().environmentObject(firestoreManager).navigationBarHidden(true)
         }
     }
         
@@ -42,6 +56,6 @@ struct RegistrationView: View {
 
 struct RegistrationView_Previews: PreviewProvider {
     static var previews: some View {
-        RegistrationView()
+        RegistrationView().environmentObject(FirestoreManager())
     }
 }
