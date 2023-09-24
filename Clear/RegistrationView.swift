@@ -28,11 +28,11 @@ struct RegistrationView: View {
             Button(action: register) {
                 Text("Create Account").padding().frame(width: 200)
             }.frame(alignment: .center).background(alignment: .center, content: {
-                LinearGradient(
-                    colors: [Color(red: 0.4627, green: 0.8392, blue: 1.0), .blue],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
+                RadialGradient(
+                    colors: [.blue, .white],
+                             center: .center,
+                             startRadius: 0,
+                             endRadius: 500)
                 .frame(width: 200, height: 80, alignment: .center)
             }
             ).frame(width: 200, height: 80, alignment: .center).cornerRadius(50).foregroundColor(.white)

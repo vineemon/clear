@@ -18,21 +18,21 @@ struct ClearApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(cloudProjects: [
-                CloudProject(title: "Database",
-                             progress: 0.0,
-                             difficulty: "Medium",
-                           theme: .seafoam),
-                CloudProject(title: "Load Balancer",
-                             progress: 0.0,
-                             difficulty: "Hard",
-                           theme: .poppy),
-                CloudProject(title: "Caching",
-                             progress: 0.0,
-                             difficulty: "Hard",
-                           theme: .poppy)
-            ])
-//            LoginView().environmentObject(firestoreManager)
+//            ContentView(cloudProjects: [
+//                CloudProject(title: "Database",
+//                             progress: 0.0,
+//                             difficulty: "Medium",
+//                           theme: .sky),
+//                CloudProject(title: "Load Balancer",
+//                             progress: 0.0,
+//                             difficulty: "Hard",
+//                           theme: .sky),
+//                CloudProject(title: "Caching",
+//                             progress: 0.0,
+//                             difficulty: "Hard",
+//                           theme: .sky)
+//            ])
+            LoginView().environmentObject(firestoreManager)
         }
     }
 }

@@ -29,11 +29,11 @@ struct LoginView: View {
                 Button(action: login) {
                     Text("Sign In").padding().frame(width: 200)
                 }.frame(alignment: .center).background(alignment: .center, content: {
-                    LinearGradient(
-                        colors: [Color(red: 0.4627, green: 0.8392, blue: 1.0), .blue],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+                    RadialGradient(
+                        colors: [.blue, .white],
+                                 center: .center,
+                                 startRadius: 0,
+                                 endRadius: 500)
                     .frame(width: 200, height: 80, alignment: .center)
                 }
                 ).frame(width: 200, height: 80, alignment: .center).cornerRadius(50).foregroundColor(.white)
@@ -43,20 +43,7 @@ struct LoginView: View {
                     }
             }.padding().navigationDestination(isPresented: $isLoginActive) {
 //                ContentView(cloudProjects: $firestoreManager.cloudProjects)
-                ContentView(cloudProjects: [
-                                    CloudProject(title: "Database",
-                                                 progress: 0.0,
-                                                 difficulty: "Medium",
-                                               theme: .seafoam),
-                                    CloudProject(title: "Load Balancer",
-                                                 progress: 0.0,
-                                                 difficulty: "Hard",
-                                               theme: .poppy),
-                                    CloudProject(title: "Caching",
-                                                 progress: 0.0,
-                                                 difficulty: "Hard",
-                                               theme: .poppy)
-                                ]).navigationBarHidden(true)
+                ContentView(cloudProjects: []).navigationBarBackButtonHidden(true)
             }
         }
     }

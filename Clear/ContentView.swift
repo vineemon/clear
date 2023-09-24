@@ -9,7 +9,7 @@ import SwiftUI
 import Foundation
 
 struct ContentView: View {
-    let cloudProjects: [CloudProject]
+    @State var cloudProjects: [CloudProject]
     @State var isSettingsActive = false
     @State var isLoggedOut = false
     @State private var selectedCourse: CloudCourse = .dataPartitioning
@@ -17,9 +17,13 @@ struct ContentView: View {
     var body: some View {
 //        NavigationStack{
             VStack {
-                List(cloudProjects, id: \.title) { cloudProject in
-                    CardView(cloudProject: cloudProject)
-                        .listRowBackground(cloudProject.theme.mainColor)
+                List {
+                    ForEach(cloudProjects, id: \.title) { cloudProject in
+                        CardView(cloudProject: cloudProject)
+                            .listRowBackground(cloudProject.theme.mainColor)
+                    }.onDelete{ (indexSet) in
+                        cloudProjects.remove(atOffsets: indexSet)
+                    }
                 }.scrollContentBackground(.hidden)
                 HStack {
                     Text("Add Course: ")
@@ -33,11 +37,11 @@ struct ContentView: View {
                 Button(action: submitEvent) {
                     Text("Submit").padding().frame(width: 200)
                 }.frame(alignment: .center).background(alignment: .center, content: {
-                    LinearGradient(
-                        colors: [Color(red: 0.4627, green: 0.8392, blue: 1.0), .blue],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+                    RadialGradient(
+                        colors: [.blue, .white],
+                                 center: .center,
+                                 startRadius: 0,
+                                 endRadius: 300)
                     .frame(width: 200, height: 40, alignment: .center)
                 }
                 ).frame(width: 200, height: 40, alignment: .center).cornerRadius(50).foregroundColor(.white)
@@ -67,6 +71,7 @@ struct ContentView: View {
     }
     
     func submitEvent() {
+        cloudProjects.insert(contentsOf: [selectedCourse.cloudProject], at: 0)
     }
 }
 
@@ -77,25 +82,37 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 enum CloudCourse: String, CaseIterable, Identifiable {
-    case dataPartitioning, indexes, proxies
+    case database, loadBalancer, caching, dataPartitioning, indexes, proxies
     var id: Self { self }
 }
 
 extension CloudCourse {
     var cloudProject: CloudProject {
         switch self {
+        case .database: return CloudProject(title: "Database",
+                         progress: 0.0,
+                         difficulty: "Medium",
+                       theme: .seafoam)
+        case .loadBalancer: return CloudProject(title: "Load Balancer",
+                         progress: 0.0,
+                         difficulty: "Hard",
+                       theme: .sky)
+        case .caching: return CloudProject(title: "Caching",
+                         progress: 0.0,
+                         difficulty: "Hard",
+                       theme: .sky)
         case .dataPartitioning: return CloudProject(title: "Data Partitioning",
                                                     progress: 0.0,
                                                       difficulty: "Hard",
-                                                    theme: .poppy)
+                                                    theme: .sky)
         case .indexes: return CloudProject(title: "Indexes",
                                            progress: 0.0,
                                          difficulty: "Hard",
-                                         theme: .poppy)
+                                         theme: .sky)
         case .proxies: return CloudProject(title: "Proxies",
                                            progress: 0.0,
                                              difficulty: "Hard",
-                                           theme: .poppy)
+                                           theme: .sky)
         }
     }
 }
@@ -117,11 +134,11 @@ extension CloudProject {
         CloudProject(title: "Load Balancer",
                      progress: 0.0,
                      difficulty: "Hard",
-                   theme: .poppy),
+                   theme: .sky),
         CloudProject(title: "Caching",
                      progress: 0.0,
                      difficulty: "Hard",
-                   theme: .poppy)
+                   theme: .sky)
     ]
 }
 
