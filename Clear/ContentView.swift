@@ -15,7 +15,7 @@ struct ContentView: View {
     @State private var selectedCourse: CloudCourse = .dataPartitioning
     
     var body: some View {
-        NavigationStack{
+//        NavigationStack{
             VStack {
                 List(cloudProjects, id: \.title) { cloudProject in
                     CardView(cloudProject: cloudProject)
@@ -31,9 +31,16 @@ struct ContentView: View {
                     }
                 }
                 Button(action: submitEvent) {
-                    Text("Submit")
-                }.buttonStyle(.borderedProminent)
-                    .frame(alignment: .bottom)
+                    Text("Submit").padding().frame(width: 200)
+                }.frame(alignment: .center).background(alignment: .center, content: {
+                    LinearGradient(
+                        colors: [Color(red: 0.4627, green: 0.8392, blue: 1.0), .blue],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    .frame(width: 200, height: 40, alignment: .center)
+                }
+                ).frame(width: 200, height: 40, alignment: .center).cornerRadius(50).foregroundColor(.white)
             }.padding().navigationTitle(Text("Learn Cloud Concepts")).navigationBarBackButtonHidden(true).navigationBarTitleDisplayMode(.inline).toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Menu {
@@ -56,7 +63,7 @@ struct ContentView: View {
             }).navigationDestination(isPresented: $isLoggedOut, destination: {
                 LoginView().environmentObject(FirestoreManager()).navigationBarBackButtonHidden(true).navigationBarTitleDisplayMode(.inline)
             })
-        }
+//        }
     }
     
     func submitEvent() {
