@@ -72,7 +72,11 @@ struct LearningView: View {
                     Label("", systemImage: "line.3.horizontal.decrease")
                 }
             }
-        }
+        }.navigationDestination(isPresented: $isSettingsActive, destination: {
+            SettingsView()
+        }).navigationDestination(isPresented: $isLoggedOut, destination: {
+            LoginView().environmentObject(FirestoreManager()).navigationBarBackButtonHidden(true).navigationBarTitleDisplayMode(.inline)
+        })
     }
 }
 

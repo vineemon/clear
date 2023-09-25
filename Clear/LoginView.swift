@@ -15,7 +15,6 @@ struct LoginView: View {
     @State var isLoginActive = false
     
     var body: some View {
-        NavigationStack {
             VStack {
                 Spacer()
                 VStack(alignment: .leading) {
@@ -43,8 +42,15 @@ struct LoginView: View {
                     }
             }.padding().navigationDestination(isPresented: $isLoginActive) {
 //                ContentView(cloudProjects: $firestoreManager.cloudProjects)
-                ContentView(cloudProjects: []).navigationBarBackButtonHidden(true)
-            }
+                ContentView(cloudProjects: []).environmentObject(firestoreManager).navigationBarBackButtonHidden(true)
+                    .onAppear {
+                        Task {
+                            if (Auth.auth().currentUser != nil) {
+                                print("User .. \(Auth.auth().currentUser?.displayName)")
+                                ContentView(cloudProjects: [])
+                            }
+                        }
+                    }
         }
     }
         

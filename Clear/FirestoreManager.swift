@@ -13,6 +13,11 @@ import SwiftUI
 
 class FirestoreManager: ObservableObject {
     @Published var cloudProjects: [CloudProject] = []
+    var user: User? {
+            didSet {
+                objectWillChange.send()
+            }
+        }
 //    @Published var images: [[EventPic]] = [[]]
     
     func fetchEvents(username: String) {
@@ -69,5 +74,14 @@ class FirestoreManager: ObservableObject {
         }
         return path
     }
+    
+    func listenToAuthState() {
+            Auth.auth().addStateDidChangeListener { [weak self] _, user in
+                guard let self = self else {
+                    return
+                }
+                self.user = user
+            }
+        }
 
 }

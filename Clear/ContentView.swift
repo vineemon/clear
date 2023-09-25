@@ -9,6 +9,7 @@ import SwiftUI
 import Foundation
 
 struct ContentView: View {
+    @EnvironmentObject var firestoreManager: FirestoreManager
     @State var cloudProjects: [CloudProject]
     @State var isSettingsActive = false
     @State var isLoggedOut = false
