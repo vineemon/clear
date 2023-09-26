@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import GoogleSignIn
 
 struct LoginView: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
@@ -17,6 +18,20 @@ struct LoginView: View {
     var body: some View {
             VStack {
                 Spacer()
+                Button(action: firestoreManager.loginGoogle) {
+                    Text("Continue with Google").frame(maxWidth: .infinity) .foregroundColor(.black).bold()
+                            .overlay(Image("GoogleIcon").resizable()
+                                .frame(width: 30, height: 30).padding(10),
+                                     alignment: .leading)
+                }.frame(alignment: .center).background(alignment: .center, content: {
+                    RadialGradient(
+                        colors: [Color(.systemGray6), .white],
+                                 center: .center,
+                                 startRadius: 0,
+                                 endRadius: 500)
+                    .frame(width: 350, height: 60, alignment: .center)
+                }
+                ).frame(width: 350, height: 60, alignment: .center).cornerRadius(10).foregroundColor(.white)
                 VStack(alignment: .leading) {
                     Text("Email").foregroundColor(.blue)
                     TextField("Enter your email address", text: $email)
@@ -43,14 +58,6 @@ struct LoginView: View {
             }.padding().navigationDestination(isPresented: $isLoginActive) {
 //                ContentView(cloudProjects: $firestoreManager.cloudProjects)
                 ContentView(cloudProjects: []).environmentObject(firestoreManager).navigationBarBackButtonHidden(true)
-                    .onAppear {
-                        Task {
-                            if (Auth.auth().currentUser != nil) {
-                                print("User .. \(Auth.auth().currentUser?.displayName)")
-                                ContentView(cloudProjects: [])
-                            }
-                        }
-                    }
         }
     }
         
