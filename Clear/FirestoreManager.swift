@@ -71,6 +71,9 @@ class FirestoreManager: ObservableObject {
             guard let self = self else {
                 return
             }
+            if (user == nil) {
+                return
+            }
             self.user = user
             self.fetch()
         }
@@ -93,6 +96,15 @@ class FirestoreManager: ObservableObject {
                 print("success")
                 self.fetch()
             }
+        }
+    }
+    
+    func logout() {
+        let firebaseAuth = Auth.auth()
+        do {
+          try firebaseAuth.signOut()
+        } catch let signOutError as NSError {
+          print("Error signing out: %@", signOutError)
         }
     }
     

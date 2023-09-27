@@ -53,6 +53,7 @@ struct ContentView: View {
                         Label("Settings", systemImage: "gearshape.fill")
                     }
                     Button {
+                        firestoreManager.logout()
                         self.isLoggedOut = true
                     } label: {
                         Label("Logout", systemImage: "rectangle.portrait.and.arrow.right.fill")
