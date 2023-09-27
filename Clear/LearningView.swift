@@ -82,10 +82,11 @@ struct LearningView: View {
 
 struct LearningView_Previews: PreviewProvider {
     static var previews: some View {
-        LearningView(cloudProject: CloudProject(title: "Database",
-                                                progress: 0.0,
-                         difficulty: "Medium",
-                       theme: .seafoam))
+        LearningView(cloudProject: CloudProject(
+            title: "Database",
+            progress: 0,
+            slides: 5,
+            theme: .seafoam))
     }
 }
 

@@ -8,7 +8,6 @@
 import Firebase
 import FirebaseFirestoreSwift
 import FirebaseStorage
-import PhotosUI
 import SwiftUI
 import GoogleSignIn
 
@@ -19,38 +18,29 @@ class FirestoreManager: ObservableObject {
             objectWillChange.send()
         }
     }
-    //    @Published var images: [[EventPic]] = [[]]
     
-    func fetchEvents(username: String) {
-        let db = Firestore.firestore()
-        let storage = Storage.storage()
-        let docRef = db.collection("CloudCourses").document(username.lowercased())
-        
+    func fetch() {
+        let docRef = Firestore.firestore().collection("CloudProjects").document(user!.uid)
         docRef.getDocument { document, error in
             if error == nil && document != nil {
                 do {
-                    //                    self.timelines = try document!.data(as: Timelines.self).timelines
-                    //                    for i in 0..<self.timelines.count {
-                    //                        self.images.insert([], at: i)
-                    //                        for j in 0..<self.timelines[i].events.count  {
-                    ////                            self.images[i].insert(EventPic(), at: j)
-                    //                            // Create a reference to the file you want to download
-                    //                            let storageRef = storage.reference().child(self.timelines[i].events[j].imageUrl)
-                    //                            // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
-                    //                            storageRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
-                    //                                if error != nil && data == nil {
-                    //                                    print("Error occurred when reading storage!!")
-                    //                                } else {
-                    //                                    // Data for image is returned
-                    //                                    self.images[i][j].eventImage = UIImage(data: data!)
-                    //                                }
-                    //                            }
-                    //                        }
-                    //                    }
+                    self.cloudProjects = try document!.data(as: CloudProjects.self).cloudProjects
                 } catch {
                     print("Error occurred when reading database!!")
                 }
             }
+        }
+    }
+    
+    
+    
+    func save() {
+        let docRef = Firestore.firestore().collection("CloudProjects").document(user!.uid)
+        do {
+            try docRef.setData(from: CloudProjects(documentId: user!.uid, cloudProjects: self.cloudProjects))
+        }
+        catch {
+          print(error)
         }
     }
     
@@ -82,6 +72,7 @@ class FirestoreManager: ObservableObject {
                 return
             }
             self.user = user
+            self.fetch()
         }
     }
     
@@ -91,6 +82,17 @@ class FirestoreManager: ObservableObject {
             try Auth.auth().signOut()
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
+        }
+    }
+    
+    func login(email: String, password: String) {
+        Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
+            if error != nil {
+                print(error?.localizedDescription ?? "")
+            } else {
+                print("success")
+                self.fetch()
+            }
         }
     }
     
@@ -125,9 +127,14 @@ class FirestoreManager: ObservableObject {
                     print(error?.localizedDescription ?? "")
                 } else {
                     print("success")
-                    //                    firestoreManager.fetchEvents(username: email)
+                    self.fetch()
                 }
             }
         }
     }
+}
+
+struct CloudProjects: Codable {
+  @DocumentID var documentId: String?
+  var cloudProjects: [CloudProject]
 }

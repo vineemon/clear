@@ -11,9 +11,9 @@ struct MainView: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
     var body: some View {
         NavigationStack {
-            Group{
+            Group {
                 if firestoreManager.user != nil {
-                    ContentView(cloudProjects: []).environmentObject(firestoreManager)
+                    ContentView().environmentObject(firestoreManager)
                 } else {LoginView().environmentObject(firestoreManager) }
             }.onAppear{
                 firestoreManager.listenToAuthState()

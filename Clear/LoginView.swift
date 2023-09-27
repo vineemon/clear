@@ -18,7 +18,7 @@ struct LoginView: View {
     var body: some View {
             VStack {
                 Spacer()
-                Button(action: firestoreManager.loginGoogle) {
+                Button(action: loginGoogle) {
                     Text("Continue with Google").frame(maxWidth: .infinity) .foregroundColor(.black).bold()
                             .overlay(Image("GoogleIcon").resizable()
                                 .frame(width: 30, height: 30).padding(10),
@@ -56,21 +56,18 @@ struct LoginView: View {
                     RegistrationView().environmentObject(firestoreManager)
                     }
             }.padding().navigationDestination(isPresented: $isLoginActive) {
-//                ContentView(cloudProjects: $firestoreManager.cloudProjects)
-                ContentView(cloudProjects: []).environmentObject(firestoreManager).navigationBarBackButtonHidden(true)
+                ContentView().environmentObject(firestoreManager).navigationBarBackButtonHidden(true)
         }
     }
-        
+    
     func login() {
-        Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
-            if error != nil {
-                print(error?.localizedDescription ?? "")
-            } else {
-                self.isLoginActive = true
-                print("success")
-                firestoreManager.fetchEvents(username: email)
-            }
-        }
+        firestoreManager.login(email: email, password: password)
+        self.isLoginActive = true
+    }
+    
+    func loginGoogle() {
+        firestoreManager.loginGoogle()
+        self.isLoginActive = true
     }
 }
 
