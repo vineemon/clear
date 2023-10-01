@@ -44,6 +44,8 @@ class FirestoreManager: ObservableObject {
         }
     }
     
+    //TODO: create a method for updating individual records. Rather than re-writing the entire list each time.
+    
     func upload(image: UIImage) -> String {
         let storage = Storage.storage()
         // Create a storage reference\

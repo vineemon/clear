@@ -17,6 +17,8 @@ struct RegistrationView: View {
     var body: some View {
         VStack {
             Spacer()
+            Image("LoginIcon").frame(width:100,height: 100)
+            Spacer()
             VStack(alignment: .leading) {
                 Text("Email").foregroundColor(.blue)
                 TextField("Enter your email address", text: $email)

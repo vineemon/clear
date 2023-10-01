@@ -5,14 +5,16 @@
 //  Created by Nadella, Vineet on 9/30/23.
 //
 
+import Foundation
 import SwiftUI
 
-struct QuizManager: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+class QuizManager : ObservableObject {
+    
+    static var currentIndex = 0
+    
+    static func createGameModel(quizData: QuizData) -> Quiz {
+        return Quiz(quizModel: quizData)
     }
-}
-
-#Preview {
-    QuizManager()
+    
+    @Published var model = QuizManager.createGameModel(i: QuizManager.currentIndex)
 }

@@ -14,16 +14,12 @@ struct MainView: View {
             Group {
                 if firestoreManager.user != nil {
                     ContentView().environmentObject(firestoreManager)
-                } else {LoginView().environmentObject(firestoreManager) }
+                } else {
+                    LoginView().environmentObject(firestoreManager)
+                }
             }.onAppear{
                 firestoreManager.listenToAuthState()
             }
         }
     }
 }
-
-//struct MainView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MainView()
-//    }
-//}

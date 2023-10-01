@@ -11,7 +11,9 @@ import Foundation
 struct ContentView: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
     @State var isSettingsActive = false
+    @State var addCoursesOpen = false
     @State var isLoggedOut = false
+    @State var isProfileOpen = false
     @State private var selectedCourse: CloudCourse = .dataPartitioning
     
     var body: some View {
@@ -24,48 +26,42 @@ struct ContentView: View {
                     firestoreManager.cloudProjects.remove(atOffsets: indexSet)
                 }
             }.scrollContentBackground(.hidden)
-            HStack {
-                Text("Add Course: ")
-                Picker("Add Course: ", selection: $selectedCourse) {
-                    ForEach(CloudCourse.allCases) { course in
-                        Text(course.cloudProject.title)
-                            .tag(course.cloudProject)
-                    }
-                }
-            }
-            Button(action: submitEvent) {
-                Text("Submit").padding().frame(width: 200)
-            }.frame(alignment: .center).background(alignment: .center, content: {
-                RadialGradient(
-                    colors: [.blue, .white],
-                    center: .center,
-                    startRadius: 0,
-                    endRadius: 300)
-                .frame(width: 200, height: 40, alignment: .center)
-            }
-            ).frame(width: 200, height: 40, alignment: .center).cornerRadius(50).foregroundColor(.white)
-        }.padding().navigationTitle(Text("Learn Cloud Concepts")).navigationBarBackButtonHidden(true).navigationBarTitleDisplayMode(.inline).toolbar {
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
-                Menu {
-                    Button {
-                        self.isSettingsActive = true
-                    } label: {
-                        Label("Settings", systemImage: "gearshape.fill")
-                    }
-                    Button {
-                        firestoreManager.logout()
-                        self.isLoggedOut = true
-                    } label: {
-                        Label("Logout", systemImage: "rectangle.portrait.and.arrow.right.fill")
-                    }
+        }.padding(.horizontal).navigationBarBackButtonHidden(true).toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                Spacer()
+                Button {
                 } label: {
-                    Label("", systemImage: "line.3.horizontal.decrease")
+                    VStack{
+                        Image(systemName:"house.fill").foregroundColor(.black)
+                        Text("Courses").font(.footnote).foregroundColor(.black)
+                    }
                 }
+                Spacer()
+                Button {
+                    self.addCoursesOpen = true
+                } label: {
+                    Image(systemName:"plus.app").foregroundColor(.black)
+
+                }
+                Spacer()
+                Button {
+                    self.isProfileOpen = true
+                } label: {
+                    VStack{
+                        Image(systemName:"person.fill").foregroundColor(.black)
+                        Text("Profile").font(.footnote).foregroundColor(.black)
+                    }
+                }
+                Spacer()
             }
-        }.navigationDestination(isPresented: $isSettingsActive, destination: {
-            SettingsView()
-        }).navigationDestination(isPresented: $isLoggedOut, destination: {
-            LoginView().environmentObject(FirestoreManager()).navigationBarBackButtonHidden(true).navigationBarTitleDisplayMode(.inline)
+            
+            ToolbarItemGroup(placement: .principal) {
+                Text("Cloud Courses").font(.title).bold()
+            }
+        }.navigationDestination(isPresented: $isProfileOpen, destination: {
+            ProfileView().environmentObject(firestoreManager).navigationBarBackButtonHidden(true)
+        }).navigationDestination(isPresented: $addCoursesOpen, destination: {
+            AddCoursesView().environmentObject(firestoreManager).navigationBarBackButtonHidden(true)
         })
     }
     
@@ -77,7 +73,9 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environmentObject(FirestoreManager())
+        NavigationStack {
+            ContentView().environmentObject(FirestoreManager())
+        }
     }
 }
 
@@ -89,11 +87,11 @@ enum CloudCourse: String, CaseIterable, Identifiable {
 extension CloudCourse {
     var cloudProject: CloudProject {
         switch self {
-        case .database: return CloudProject(title: "Database",
+        case .database: return CloudProject(title: "Databases",
                          progress: 0,
                                             slides: 5,
                        theme: .seafoam)
-        case .loadBalancer: return CloudProject(title: "Load Balancer",
+        case .loadBalancer: return CloudProject(title: "Load Balancers",
                          progress: 0,
                                                 slides: 5,
                        theme: .sky)
@@ -159,11 +157,12 @@ enum Theme: String, Codable {
     case tan
     case teal
     case yellow
+    case black
 
     var accentColor: Color {
         switch self {
         case .bubblegum, .buttercup, .lavender, .orange, .periwinkle, .poppy, .seafoam, .sky, .tan, .teal, .yellow: return .black
-        case .indigo, .magenta, .navy, .oxblood, .purple: return .white
+        case .indigo, .magenta, .navy, .oxblood, .purple, .black: return .white
         }
     }
     

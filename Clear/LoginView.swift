@@ -18,6 +18,8 @@ struct LoginView: View {
     var body: some View {
             VStack {
                 Spacer()
+                Image("LoginIcon").resizable().scaledToFit()
+                Spacer()
                 Button(action: loginGoogle) {
                     Text("Continue with Google").frame(maxWidth: .infinity) .foregroundColor(.black).bold()
                             .overlay(Image("GoogleIcon").resizable()
