@@ -23,6 +23,7 @@ struct ContentView: View {
                     CardView(cloudProject: cloudProject)
                         .listRowBackground(cloudProject.theme.mainColor)
                 }.onDelete{ (indexSet) in
+                    indexSet.forEach({(n) in firestoreManager.deleteItem(cloudProject: firestoreManager.cloudProjects[n])})
                     firestoreManager.cloudProjects.remove(atOffsets: indexSet)
                 }
             }.scrollContentBackground(.hidden)
@@ -56,18 +57,13 @@ struct ContentView: View {
             }
             
             ToolbarItemGroup(placement: .principal) {
-                Text("Cloud Courses").font(.title).bold()
+                Text("Cloud Courses").font(.custom("SF Pro Rounded", size: 30)).bold()
             }
         }.navigationDestination(isPresented: $isProfileOpen, destination: {
             ProfileView().environmentObject(firestoreManager).navigationBarBackButtonHidden(true)
         }).navigationDestination(isPresented: $addCoursesOpen, destination: {
             AddCoursesView().environmentObject(firestoreManager).navigationBarBackButtonHidden(true)
         })
-    }
-    
-    func submitEvent() {
-        firestoreManager.cloudProjects.insert(contentsOf: [selectedCourse.cloudProject], at: 0)
-        firestoreManager.save()
     }
 }
 

@@ -24,7 +24,11 @@ class FirestoreManager: ObservableObject {
         docRef.getDocument { document, error in
             if error == nil && document != nil {
                 do {
-                    self.cloudProjects = try document!.data(as: CloudProjects.self).cloudProjects
+                    let cloudProjectsMap = try document!.data(as: [String: CloudProject].self)
+                    let cloudProjectsSortedArray = cloudProjectsMap.sorted(by: { $0.0 < $1.0 })
+                    cloudProjectsSortedArray.forEach({ key, value in
+                        self.cloudProjects.append(value)
+                    })
                 } catch {
                     print("Error occurred when reading database!!")
                 }
@@ -32,40 +36,25 @@ class FirestoreManager: ObservableObject {
         }
     }
     
-    
-    
-    func save() {
+    func saveItem(cloudProject: CloudProject) {
         let docRef = Firestore.firestore().collection("CloudProjects").document(user!.uid)
         do {
-            try docRef.setData(from: CloudProjects(documentId: user!.uid, cloudProjects: self.cloudProjects))
-        }
-        catch {
-          print(error)
+            var cloudProjectCoded = try Firestore.Encoder().encode(cloudProject)
+            docRef.setData([cloudProject.title: cloudProjectCoded], merge: true)
+        } catch {
+            print("Error occurred when encoding object!!")
         }
     }
     
-    //TODO: create a method for updating individual records. Rather than re-writing the entire list each time.
-    
-    func upload(image: UIImage) -> String {
-        let storage = Storage.storage()
-        // Create a storage reference\
-        let path = "images/\(UUID().uuidString).jpg"
-        let storageRef = storage.reference().child(path)
-        //
-        //        // Resize the image to 200px with a custom extension
-        //        let resizedImage = image..aspectFittedToHeight(200)
-        
-        // Convert the image into JPEG and compress the quality to reduce its size
-        let data = image.jpegData(compressionQuality: 0.2)
-        
-        // Upload the file to the path "images/rivers.jpg"
-        _ = storageRef.putData(data!, metadata: nil) { (metadata, error) in
-            if error != nil && metadata == nil {
-                // Uh-oh, an error occurred!
-                return
+    func deleteItem(cloudProject: CloudProject) {
+        let docRef = Firestore.firestore().collection("CloudProjects").document(user!.uid)
+        docRef.updateData([cloudProject.title: FieldValue.delete()]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
             }
         }
-        return path
     }
     
     func listenToAuthState() {
@@ -146,9 +135,4 @@ class FirestoreManager: ObservableObject {
             }
         }
     }
-}
-
-struct CloudProjects: Codable {
-  @DocumentID var documentId: String?
-  var cloudProjects: [CloudProject]
 }

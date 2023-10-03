@@ -13,29 +13,37 @@ struct AddCoursesView: View {
     @State var isHomeOpen = false
     @State var isLoggedOut = false
     @State var isProfileOpen = false
+    @State var isCourseAdded = false
     @State private var selectedCourse: CloudCourse = .dataPartitioning
     
     var body: some View {
-        HStack {
-            Text("Add Course: ")
-            Picker("Add Course: ", selection: $selectedCourse) {
-                ForEach(CloudCourse.allCases) { course in
-                    Text(course.cloudProject.title)
-                        .tag(course.cloudProject)
-                }
+        VStack {
+            HStack {
+                Text("Add Course: ")
+                Picker("Add Course: ", selection: $selectedCourse) {
+                    ForEach(CloudCourse.allCases) { course in
+                        Text(course.cloudProject.title)
+                            .tag(course.cloudProject)
+                    }
+                }.onChange(of: selectedCourse) { _ in self.isCourseAdded = false }
             }
-        }
-        Button(action: submitEvent) {
-            Text("Submit").padding().frame(width: 200)
-        }.frame(alignment: .center).background(alignment: .center, content: {
-            RadialGradient(
-                colors: [.blue, .white],
-                center: .center,
-                startRadius: 0,
-                endRadius: 300)
-            .frame(width: 200, height: 40, alignment: .center)
-        }
-        ).frame(width: 200, height: 40, alignment: .center).cornerRadius(50).foregroundColor(.white).toolbar {
+            Button(action: submitEvent) {
+                Text("Submit").padding().frame(width: 200)
+            }.frame(alignment: .center).background(alignment: .center, content: {
+                RadialGradient(
+                    colors: [.blue, .white],
+                    center: .center,
+                    startRadius: 0,
+                    endRadius: 300)
+                .frame(width: 200, height: 40, alignment: .center)
+            }
+            ).frame(width: 200, height: 40, alignment: .center).cornerRadius(50).foregroundColor(.white)
+            if self.isCourseAdded {
+                Text("Successfully added " + selectedCourse.cloudProject.title + " to your courses list!").multilineTextAlignment(.center).padding(.top, 50.0).padding([.leading, .trailing, .bottom])
+            } else {
+                Text("").multilineTextAlignment(.center).padding(.top, 50.0).padding([.leading, .trailing, .bottom])
+            }
+        }.toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 Spacer()
                 Button {
@@ -64,7 +72,7 @@ struct AddCoursesView: View {
             }
             
             ToolbarItemGroup(placement: .principal) {
-                Text("Add Courses").font(.title).bold()
+                Text("Add Courses").font(.custom("SF Pro Rounded", size: 30)).bold()
             }
         }.navigationDestination(isPresented: $isHomeOpen, destination: {
             ContentView().environmentObject(firestoreManager).navigationBarBackButtonHidden(true)
@@ -79,7 +87,10 @@ struct AddCoursesView: View {
         // cannot add existing course
         if (index != -1) {
             firestoreManager.cloudProjects.insert(selectedCourse.cloudProject, at: index)
-            firestoreManager.save()
+            firestoreManager.saveItem(cloudProject: selectedCourse.cloudProject)
+            self.isCourseAdded = true
+        } else {
+            self.isCourseAdded = false
         }
     }
 }
@@ -103,7 +114,10 @@ extension Array {
     }
 }
 
-
-#Preview {
-    AddCoursesView()
+struct AddCoursesView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            AddCoursesView().environmentObject(FirestoreManager())
+        }
+    }
 }

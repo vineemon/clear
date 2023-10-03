@@ -56,7 +56,7 @@ struct ProfileView: View {
             }
             
             ToolbarItemGroup(placement: .principal) {
-                Text("Profile Settings").font(.title).bold()
+                Text("Profile Settings").font(.custom("SF Pro Rounded", size: 30)).bold()
             }
         }.navigationDestination(isPresented: $addCoursesOpen, destination: {
             AddCoursesView().environmentObject(firestoreManager).navigationBarBackButtonHidden(true)
