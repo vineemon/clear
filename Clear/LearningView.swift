@@ -17,6 +17,7 @@ struct LearningView: View {
     
     init(cloudProject: CloudProject) {
         self.cloudProject = cloudProject
+        self.learningViews = learningViews
         UIPageControl.appearance().currentPageIndicatorTintColor = .systemBlue
         UIPageControl.appearance().pageIndicatorTintColor = .gray
         UIPageControl.appearance().tintColor = .gray
