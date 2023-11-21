@@ -9,10 +9,20 @@ import SwiftUI
 
 struct PlainView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Group{
+            VStack {
+                Text("Yet to be developed").font(.title2).bold().frame(maxWidth: .infinity, alignment: .leading)
+                Spacer()
+            }
+        }
     }
 }
 
-#Preview {
-    PlainView()
+
+struct PlainView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            PlainView()
+        }.padding()
+    }
 }

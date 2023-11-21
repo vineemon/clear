@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LoadBalancerPage3: View {
-    @Binding var unlock: Bool
+    @State var cloudProject: CloudProject
     @State var isSelected: Int = 0
     var columns: [GridItem] = Array(repeating: GridItem(.fixed(170), spacing: 0, alignment: .bottom), count: 2)
     var quizData: QuizModel {
@@ -22,27 +22,18 @@ struct LoadBalancerPage3: View {
     
     var body: some View {
         VStack() {
-            Text("Load Balancers Knowledge Check").font(.title2).bold().frame(maxWidth: .infinity, alignment: .leading)
+            Text("Load Balancers Knowledge Check").font(.custom("Avenir", size: 20)).bold().frame(maxWidth: .infinity, alignment: .leading)
             Text("")
             Text(quizData.question).font(.headline).bold().frame(maxWidth: .infinity)
+            Spacer()
             LazyVGrid(columns: columns, spacing: 20) {
                 ForEach(quizData.optionsList) { quizOption in
                     VStack {
-                        if (self.isSelected == 1) {
-                            OptionStatusImageView(imageName: "checkmark")
-                        } else if (self.isSelected == -1) {
-                            OptionStatusImageView(imageName: "xmark")
-                        } else {
-                            OptionView(quizOption: quizOption)
-                        }
+                        OptionView(quizOption: quizOption)
                     }.frame(width: 150, height: 150)
-                        .background(setBackgroundColor())
-                        .background(setBackgroundColor())
+                        .background(Color.white)
                         .onTapGesture {
                             verifyAnswer(selectedOption: quizOption)
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                self.isSelected = 0
-                            }
                         }
                 }
             }
@@ -61,6 +52,10 @@ struct LoadBalancerPage3: View {
                 }
             }
             Spacer()
+        }.toolbar {
+            ToolbarItemGroup(placement: .principal) {
+                Text("Load Balancer").font(.custom("Avenir", size: 30)).bold()
+            }
         }
     }
     
@@ -68,21 +63,15 @@ struct LoadBalancerPage3: View {
     func verifyAnswer(selectedOption: QuizOption) {
         if (selectedOption.optionId == "B") {
             self.isSelected = 1
-            self.unlock = true
+            self.cloudProject.slide = 5
         } else {
             self.isSelected = -1
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.isSelected = 0
+            }
         }
     }
-    
-    func setBackgroundColor() -> Color {
-        if (self.isSelected == 1) {
-            return Color.green
-        } else if (self.isSelected == -1) {
-            return Color.red
-        } else {
-            return Color.white
-        }
-    }
+
 }
 
 struct OptionView: View {
@@ -102,22 +91,15 @@ struct OptionView: View {
         }
     }
 }
-
-struct OptionStatusImageView: View {
-    var imageName: String
-    var body: some View {
-        Image(systemName: imageName)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .padding(EdgeInsets(top: 40, leading: 40, bottom: 40, trailing: 40))
-            .foregroundColor(Color.white)
-    }
-}
     
 struct LoadBalancerPage3_Previews: PreviewProvider {
+    @State static var testCloudProject = CloudProject(title: "Load Balancer",
+                 progress: 0,
+                 slide: 5,
+               theme: .sky)
     static var previews: some View {
         NavigationStack {
-            LoadBalancerPage3(unlock: Binding.constant(false))
+            LoadBalancerPage3(cloudProject: testCloudProject)
         }.padding()
     }
 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D1A9A402AD0BCC6000D5D82 /* DatabasePage2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1A9A3F2AD0BCC6000D5D82 /* DatabasePage2.swift */; };
+		0D1A9A462AD34BCC000D5D82 /* CachingPage2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1A9A452AD34BCC000D5D82 /* CachingPage2.swift */; };
 		0D39ACA02AC8AC2B0015E670 /* LoadBalancerPage2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D39AC9F2AC8AC2B0015E670 /* LoadBalancerPage2.swift */; };
 		0D39ACA22AC8E9AB0015E670 /* LoadBalancerPage3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D39ACA12AC8E9AB0015E670 /* LoadBalancerPage3.swift */; };
 		0D39ACA62AC8EA6C0015E670 /* QuizModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D39ACA52AC8EA6C0015E670 /* QuizModel.swift */; };
@@ -79,6 +81,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D1A9A3F2AD0BCC6000D5D82 /* DatabasePage2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabasePage2.swift; sourceTree = "<group>"; };
+		0D1A9A452AD34BCC000D5D82 /* CachingPage2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachingPage2.swift; sourceTree = "<group>"; };
 		0D39AC9F2AC8AC2B0015E670 /* LoadBalancerPage2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadBalancerPage2.swift; sourceTree = "<group>"; };
 		0D39ACA12AC8E9AB0015E670 /* LoadBalancerPage3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadBalancerPage3.swift; sourceTree = "<group>"; };
 		0D39ACA52AC8EA6C0015E670 /* QuizModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizModel.swift; sourceTree = "<group>"; };
@@ -214,7 +218,9 @@
 				2D9D13242AB0D63300B85540 /* LoginView.swift */,
 				2D9D13262AB0D65100B85540 /* RegistrationView.swift */,
 				2D9D131C2AB0A23200B85540 /* DatabasePage1.swift */,
+				0D1A9A3F2AD0BCC6000D5D82 /* DatabasePage2.swift */,
 				2D9D13202AB0BF5B00B85540 /* CachingPage1.swift */,
+				0D1A9A452AD34BCC000D5D82 /* CachingPage2.swift */,
 				2D9D131E2AB0BEF900B85540 /* LoadBalancerPage1.swift */,
 				0D39AC9F2AC8AC2B0015E670 /* LoadBalancerPage2.swift */,
 				0D39ACA12AC8E9AB0015E670 /* LoadBalancerPage3.swift */,
@@ -427,8 +433,10 @@
 				0D7029E72AC79A6C005A89C3 /* AddCoursesView.swift in Sources */,
 				2D9D131F2AB0BEF900B85540 /* LoadBalancerPage1.swift in Sources */,
 				2D9D13272AB0D65100B85540 /* RegistrationView.swift in Sources */,
+				0D1A9A462AD34BCC000D5D82 /* CachingPage2.swift in Sources */,
 				2D9D131D2AB0A23200B85540 /* DatabasePage1.swift in Sources */,
 				0D39ACA22AC8E9AB0015E670 /* LoadBalancerPage3.swift in Sources */,
+				0D1A9A402AD0BCC6000D5D82 /* DatabasePage2.swift in Sources */,
 				2DA438B12AAC0B700060A725 /* CardView.swift in Sources */,
 				2DA438862AAC085E0060A725 /* ClearApp.swift in Sources */,
 				2D9D13252AB0D63300B85540 /* LoginView.swift in Sources */,

@@ -51,7 +51,7 @@ struct AddCoursesView: View {
                 } label: {
                     VStack{
                         Image(systemName:"house.fill").foregroundColor(.black)
-                        Text("Courses").font(.footnote).foregroundColor(.black)
+                        Text("Courses").font(.custom("Avenir", size: 15)).foregroundColor(.black)
                     }
                 }
                 Spacer()
@@ -65,14 +65,14 @@ struct AddCoursesView: View {
                 } label: {
                     VStack{
                         Image(systemName:"person.fill").foregroundColor(.black)
-                        Text("Profile").font(.footnote).foregroundColor(.black)
+                        Text("Profile").font(.custom("Avenir", size: 15)).foregroundColor(.black)
                     }
                 }
                 Spacer()
             }
             
             ToolbarItemGroup(placement: .principal) {
-                Text("Add Courses").font(.custom("SF Pro Rounded", size: 30)).bold()
+                Text("Add Courses").font(.custom("Avenir", size: 30)).bold()
             }
         }.navigationDestination(isPresented: $isHomeOpen, destination: {
             ContentView().environmentObject(firestoreManager).navigationBarBackButtonHidden(true)

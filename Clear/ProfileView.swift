@@ -35,7 +35,7 @@ struct ProfileView: View {
                 } label: {
                     VStack{
                         Image(systemName:"house.fill").foregroundColor(.black)
-                        Text("Courses").font(.footnote).foregroundColor(.black)
+                        Text("Courses").font(.custom("Avenir", size: 15)).foregroundColor(.black)
                     }
                 }
                 Spacer()
@@ -49,14 +49,14 @@ struct ProfileView: View {
                 } label: {
                     VStack{
                         Image(systemName:"person.fill").foregroundColor(.black)
-                        Text("Profile").font(.footnote).foregroundColor(.black)
+                        Text("Profile").font(.custom("Avenir", size: 15)).foregroundColor(.black)
                     }
                 }
                 Spacer()
             }
             
             ToolbarItemGroup(placement: .principal) {
-                Text("Profile Settings").font(.custom("SF Pro Rounded", size: 30)).bold()
+                Text("Profile Settings").font(.custom("Avenir", size: 30)).bold()
             }
         }.navigationDestination(isPresented: $addCoursesOpen, destination: {
             AddCoursesView().environmentObject(firestoreManager).navigationBarBackButtonHidden(true)

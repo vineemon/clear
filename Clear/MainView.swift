@@ -10,16 +10,15 @@ import SwiftUI
 struct MainView: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
     var body: some View {
-        NavigationStack {
-            Group {
-                if firestoreManager.user != nil {
-                    ContentView().environmentObject(firestoreManager)
-                } else {
-                    LoginView().environmentObject(firestoreManager)
-                }
-            }.onAppear{
-                firestoreManager.listenToAuthState()
+        Group {
+            if firestoreManager.user != nil {
+                ContentView()
+            } else {
+                LoginView()
             }
+        }
+        .onAppear(){
+            firestoreManager.listenToAuthState()
         }
     }
 }

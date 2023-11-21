@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct LearningView: View {
-    let cloudProject: CloudProject
+    @EnvironmentObject var firestoreManager: FirestoreManager
+    @State var cloudProject: CloudProject
+    var learningViews: [Any]
     @State var isLearningViewActive = false
     @State var isSettingsActive = false
     @State var isLoggedOut = false
     
     @State var loadBalancerUnlock = false
     
-    init(cloudProject: CloudProject) {
+    init(cloudProject: CloudProject, learningViews: [Any]) {
         self.cloudProject = cloudProject
         self.learningViews = learningViews
         UIPageControl.appearance().currentPageIndicatorTintColor = .systemBlue
@@ -23,57 +25,45 @@ struct LearningView: View {
         UIPageControl.appearance().tintColor = .gray
     }
     
-    // start with only 3 slides for Load Balancers
-    // open up the next 3 slides after unlocked
-    
     var body: some View {
         VStack(alignment: .leading){
             // learning here, dependent on cloudproject
             TabView {
-                ForEach(0..<cloudProject.slides, id:\.self) {i in
-                    if "Databases" == cloudProject.title {
-                        if i == 0 {
-                            DatabasePage1()
-                        } else if i == 1 {
-                            DatabasePage1()
-                        } else {
-                            DatabasePage1()
+                ForEach(0..<learningViews.count, id: \.self) {i in
+                    // start with only 3 slides for Load Balancers
+                    // open up the next 3 slides after unlocked
+                    if i < cloudProject.slide {
+                        switch learningViews[i].self {
+                        case is DatabasePage1.Type: DatabasePage1()
+                        case is DatabasePage2.Type: DatabasePage2()
+                        case is LoadBalancerPage1.Type: LoadBalancerPage1()
+                        case is LoadBalancerPage2.Type: LoadBalancerPage2()
+                        case is LoadBalancerPage3.Type: LoadBalancerPage3(cloudProject: cloudProject)
+                        case is CachingPage1.Type: CachingPage1().environmentObject(firestoreManager)
+                        case is CachingPage2.Type: CachingPage2()
+                        default: EmptyView()
                         }
-                    }
-                    else if "Load Balancers" == cloudProject.title {
-                        if i == 0 {
-                            LoadBalancerPage1()
-                        } else if i == 1 {
-                            LoadBalancerPage2()
-                        } else if i == 2 {
-                            LoadBalancerPage3(unlock: $loadBalancerUnlock)
-                        } else if (loadBalancerUnlock) {
-                            LoadBalancerPage2()
-                        }
-                    }
-                    else {
-                        LoadBalancerPage1()
                     }
                 }
             }.tabViewStyle(.page)
-        }.padding().navigationTitle(Text(cloudProject.title)).navigationBarTitleDisplayMode(.large).navigationDestination(isPresented: $isSettingsActive, destination: {
+        }.padding().navigationDestination(isPresented: $isSettingsActive, destination: {
             SettingsView()
         }).navigationDestination(isPresented: $isLoggedOut, destination: {
-            LoginView().environmentObject(FirestoreManager()).navigationBarBackButtonHidden(true).navigationBarTitleDisplayMode(.inline)
+            LoginView().environmentObject(firestoreManager).navigationBarBackButtonHidden(true).navigationBarTitleDisplayMode(.inline)
         })
     }
 }
 
+
 struct LearningView_Previews: PreviewProvider {
+    @State static var cloudProjectTest: CloudProject = CloudProject(
+        title: "Load Balancers",
+        progress: 0,
+        slide: 5,
+        theme: .seafoam)
     static var previews: some View {
-        LearningView(cloudProject: CloudProject(
-            title: "Databases",
-            progress: 0,
-            slides: 5,
-            theme: .seafoam))
+        NavigationStack {
+            LearningView(cloudProject: cloudProjectTest, learningViews: [LoadBalancerPage1.self, LoadBalancerPage2.self])
+        }
     }
 }
-
-// Create map of title to paged content like Database: Page 1 Databases, Page 2 Visuals, Page 3 Exercises
-
-//
